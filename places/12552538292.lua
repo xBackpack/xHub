@@ -39,6 +39,8 @@ local currentRoom = Instance.new("ObjectValue")
 currentRoom.Name = "CurrentRoom"
 currentRoom.Parent = player
 
+local pandemoniumESP = nil
+
 local playerGui = player.PlayerGui
 local camera = workspace.CurrentCamera
 
@@ -69,6 +71,7 @@ local nodeMonsters = {
 
 local assets = {
     Items = {
+        "BigFlashBeacon",
         "Blacklight",
         "CodeBreacher",
         "DwellerPiece",
@@ -158,10 +161,12 @@ funcs.setupInteractableESP = function(interactable, colour, name, enabled)
 
     if name == "CodeBreacher" then
         name = "Code Breacher"
-    elseif name == "FlashBeacon" then
+    elseif name == "FlashBeacon" or name == "BigFlashBeacon" then
         name = "Flash Beacon"
     elseif name == "WindupLight" then
         name = "Hand-Cranked Flashlight"
+    elseif name == "SmallLanterm" then
+        name = "Lantern"
     elseif name == "DwellerPiece" then
         name = "Wall Dweller Piece"
     end
@@ -682,12 +687,21 @@ library:GiveSignal(workspace.ChildAdded:Connect(function(child)
         if child.Name == "Pandemonium" then
             if toggles.PandemoniumNotifier.Value then getgenv().Alert("Pandemonium spawned. Good luck!") end
 
-            funcs.setupMonsterESP(
+            if pandemoniumESP then
+                pandemoniumESP.Destroy()
+            end
+
+            pandemoniumESP = funcs.setupMonsterESP(
                 child,
                 options.PandemoniumColour.Value,
                 "Pandemonium",
                 options.EntityESPList.Value["Pandemonium"]
             )
+
+            child.Destroying:Once(function()
+                pandemoniumESP.Destroy()
+                pandemoniumESP = nil
+            end)
         end
 
         if child.Name == "A60" then
@@ -749,6 +763,7 @@ library:GiveSignal(rooms.ChildAdded:Connect(function(room)
             room.Name == "TheoristOffice" or
             room.Name == "BigChasm" or
             room.Name == "PT1" or
+            room.Name == "DeadSeater" or
             string.find(room.Name, "IntentionallyUnfinished")
         ) then
         getgenv().Alert("The next room is rare!")
