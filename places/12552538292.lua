@@ -502,6 +502,8 @@ notifiers.Entity:AddToggle("PandemoniumNotifier", { Text = "Pandemonium Notifier
 
 notifiers.Entity:AddToggle("A60Notifier", { Text = "A60 Notifier" })
 
+notifiers.Entity:AddToggle("MirageNotifier", { Text = "Mirage Notifier" })
+
 notifiers.Entity:AddToggle("WallDwellerNotifier", { Text = "Wall Dweller Notifier" })
 
 notifiers.Entity:AddToggle("EyefestationNotifier", { Text = "Eyefestation Notifier" })
@@ -682,9 +684,7 @@ library:GiveSignal(workspace.ChildAdded:Connect(function(child)
                 name,
                 options.EntityESPList.Value["Node Monsters"]
             )
-        end
-
-        if child.Name == "Pandemonium" then
+        elseif child.Name == "Pandemonium" then
             if toggles.PandemoniumNotifier.Value then getgenv().Alert("Pandemonium spawned. Good luck!") end
 
             if pandemoniumESP then
@@ -702,9 +702,7 @@ library:GiveSignal(workspace.ChildAdded:Connect(function(child)
                 pandemoniumESP.Destroy()
                 pandemoniumESP = nil
             end)
-        end
-
-        if child.Name == "A60" then
+        elseif child.Name == "A60" then
             if toggles.A60Notifier.Value then getgenv().Alert("A60 SPAWNED! THAT'S RARE LOL!!!!!!!!!") end
 
             funcs.setupMonsterESP(
@@ -713,6 +711,8 @@ library:GiveSignal(workspace.ChildAdded:Connect(function(child)
                 "A60",
                 options.EntityESPList.Value["A60"]
             )
+        elseif child.Name == "Mirage" then
+            if toggles.A60Notifier.Value then getgenv().Alert("MIRAGE! THAT'S RARE LOL!!!!!!!!!") end
         end
     end
 
@@ -726,7 +726,7 @@ library:GiveSignal(workspace.ChildAdded:Connect(function(child)
 end))
 
 library:GiveSignal(monsters.ChildAdded:Connect(function(monster)
-    if monster.Name == "WallDweller" then
+    if string.find(monster.Name, "WallDweller") then
         if toggles.WallDwellerNotifier.Value then getgenv().Alert("A Wall Dweller has spawned in the walls. Find it!") end
 
         funcs.setupMonsterESP(
