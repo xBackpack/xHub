@@ -141,9 +141,9 @@ funcs.setupMonsterESP = function(monster, colour, name, enabled)
     })
 
     if not toggles.EntityESP.Value then
-        esp.SetVisible(false)
+        esp.SetVisible(false) -- WHY DOESN@T THIS FUCKING WORK I HATE MY LIFE
     elseif not enabled then
-        esp.SetVisible(false)
+        esp.SetVisible(false) -- WHY DOESN@T THIS FUCKING WORK I HATE MY LIFE
     end
 
     return esp
@@ -175,12 +175,10 @@ funcs.setupInteractableESP = function(interactable, colour, name, enabled)
         ArrowEnabled = toggles.InteractableESPArrows.Value
     })
 
-    print(not enabled)
-
     if not toggles.InteractableESP.Value then
-        esp.SetVisible(false)
+        esp.SetVisible(false) -- WHY DOESN@T THIS FUCKING WORK I HATE MY LIFE
     elseif not enabled then
-        esp.SetVisible(false)
+        esp.SetVisible(false) -- WHY DOESN@T THIS FUCKING WORK I HATE MY LIFE
     end
 
     return esp
@@ -213,16 +211,6 @@ funcs.checkForESP = function(obj)
                 options.DocumentColour.Value,
                 "Document",
                 options.InteractableESPList.Value["Documents"]
-            )
-        )
-    elseif obj.Name == "Lever" then
-        table.insert(
-            activeRoomStuff.ESP.Levers,
-            funcs.setupInteractableESP(
-                obj,
-                options.LeverColour.Value,
-                "Lever",
-                options.InteractableESPList.Value["Levers"]
             )
         )
     end
@@ -756,8 +744,11 @@ library:GiveSignal(rooms.ChildAdded:Connect(function(room)
             room.Name == "LookUp" or
             room.Name == "Huh?DeadEnd?" or
             room.Name == "SisterLocation" or
-            room.Name == "SpiderCavern" or
             room.Name == "LotsOfLockers" or
+            room.Name == "Shrinking" or
+            room.Name == "TheoristOffice" or
+            room.Name == "BigChasm" or
+            room.Name == "PT1" or
             string.find(room.Name, "IntentionallyUnfinished")
         ) then
         getgenv().Alert("The next room is rare!")
@@ -837,6 +828,16 @@ library:GiveSignal(currentRoom.Changed:Connect(function(room)
                     options.VoidMassColour.Value,
                     "Void Mass",
                     options.EntityESPList.Value["Void Mass"]
+                )
+            )
+        elseif child.Name == "Lever" then
+            table.insert(
+                activeRoomStuff.ESP.Levers,
+                funcs.setupInteractableESP(
+                    child,
+                    options.LeverColour.Value,
+                    "Lever",
+                    options.InteractableESPList.Value["Levers"]
                 )
             )
         end
