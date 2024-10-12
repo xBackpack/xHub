@@ -775,6 +775,7 @@ library:GiveSignal(rooms.ChildAdded:Connect(function(room)
             room.Name == "LongStraightBrokenSide" or
             room.Name == "BigHallPit" or
             room.Name == "Overheat1" or
+            room.Name == "Overheat2" or
             room.Name == "ElectricityPuzzleFloor1" or
             string.find(room.Name, "Electrfieid") or
             string.find(room.Name, "Electrified") or
