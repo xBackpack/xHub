@@ -486,6 +486,8 @@ entity.Exploits:AddToggle("AntiSquiddles", { Text = "Anti Squiddles", Risky = tr
 
 entity.Exploits:AddToggle("AntiSteam", { Text = "Anti Steam", Risky = true })
 
+entity.Exploits:AddToggle("AntiFan", { Text = "Anti Fan", Risky = true })
+
 entity.Exploits:AddToggle("AntiTurret", { Text = "Anti Turret", Risky = true })
 
 ------------------------------------------------
