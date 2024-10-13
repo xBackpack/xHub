@@ -96,6 +96,7 @@ local activeRoomStuff = {
         Doors = {},
         Generators = {},
         Levers = {},
+        Beacons = {},
         Entities = {},
     }
 }
@@ -529,7 +530,6 @@ notifiers.Other:AddToggle("DocumentNotifier", { Text = "Document Notifier" })
 local esp = {
     Interactables = tabs.ESP:AddLeftGroupbox("Interactables"),
     Entities = tabs.ESP:AddLeftGroupbox("Entities"),
-    Other = tabs.ESP:AddLeftGroupbox("Other"),
     Players = tabs.ESP:AddRightGroupbox("Players"),
     Colours = tabs.ESP:AddRightGroupbox("Colours")
 }
@@ -550,7 +550,8 @@ esp.Interactables:AddDropdown("InteractableESPList", {
         "Money",
         "Doors",
         "Generators",
-        "Levers"
+        "Levers",
+        "Water Beacons"
     }
 })
 
@@ -583,11 +584,6 @@ esp.Entities:AddDivider()
 esp.Entities:AddToggle("EntityESPTracers", { Text = "Tracers" })
 
 esp.Entities:AddToggle("EntityESPArrows", { Text = "Arrows" })
-
-esp.Other:AddToggle("BeaconESP", {
-    Text = "Water Beacon ESP",
-    Risky = true
-})
 
 esp.Players:AddToggle("PlayerESP", { Text = "Enabled", Risky = true })
 
@@ -629,6 +625,10 @@ esp.Colours:AddLabel("Generators"):AddColorPicker("GeneratorColour", {
 })
 
 esp.Colours:AddLabel("Levers"):AddColorPicker("LeverColour", {
+    Default = Color3.fromRGB(0, 255, 0) -- Green
+})
+
+esp.Colours:AddLabel("Water Beacons"):AddColorPicker("BeaconColour", {
     Default = Color3.fromRGB(0, 255, 0) -- Green
 })
 
@@ -793,7 +793,6 @@ library:GiveSignal(rooms.ChildAdded:Connect(function(room)
             room.Name == "BigHallPit" or
             room.Name == "Overheat1" or
             room.Name == "Overheat2" or
-            room.Name == "ElectricityPuzzleFloor1" or
             string.find(room.Name, "Electrfieid") or
             string.find(room.Name, "Electrified") or
             string.find(room.Name, "BigHole")
@@ -861,6 +860,20 @@ library:GiveSignal(currentRoom.Changed:Connect(function(room)
         end
     end
 
+    for _, part in pairs(room.Parts:GetChildren()) do
+        if part.Name == "Beacon" then
+            table.insert(
+                activeRoomStuff.ESP.Beacons,
+                funcs.setupInteractableESP(
+                    part,
+                    options.BeaconColour.Value,
+                    "Water Beacon",
+                    options.InteractableESPList.Value["Water Beacons"]
+                )
+            )
+        end
+    end
+
     for _, interactable in pairs(room.Interactables:GetChildren()) do
         if (interactable.Name == "Generator" or interactable.Name == "EncounterGenerator") then
             table.insert(
@@ -899,6 +912,7 @@ library:GiveSignal(currentRoom.Changed:Connect(function(room)
     end
 
     table.insert(activeRoomStuff.Connections, room.DescendantAdded:Connect(function(obj)
+        print("ADDED")
         funcs.checkForESP(obj)
     end))
 end))
