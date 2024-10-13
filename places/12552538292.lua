@@ -144,10 +144,9 @@ funcs.setupMonsterESP = function(monster, colour, name, enabled)
         ArrowEnabled = arrowEnabled
     })
 
-    if not toggles.EntityESP.Value then
-        esp.SetVisible(false) -- WHY DOESN@T THIS FUCKING WORK I HATE MY LIFE
-    elseif not enabled then
-        esp.SetVisible(false) -- WHY DOESN@T THIS FUCKING WORK I HATE MY LIFE
+    if not toggles.EntityESP.Value or not enabled then
+        print("INVISIBLE")
+        esp.SetVisible(false)
     end
 
     return esp
@@ -166,7 +165,7 @@ funcs.setupInteractableESP = function(interactable, colour, name, enabled)
         name = "Flash Beacon"
     elseif name == "WindupLight" then
         name = "Hand-Cranked Flashlight"
-    elseif name == "SmallLanterm" then
+    elseif name == "SmallLantern" then
         name = "Lantern"
     elseif name == "DwellerPiece" then
         name = "Wall Dweller Piece"
@@ -181,10 +180,9 @@ funcs.setupInteractableESP = function(interactable, colour, name, enabled)
         ArrowEnabled = toggles.InteractableESPArrows.Value
     })
 
-    if not toggles.InteractableESP.Value then
-        esp.SetVisible(false) -- WHY DOESN@T THIS FUCKING WORK I HATE MY LIFE
-    elseif not enabled then
-        esp.SetVisible(false) -- WHY DOESN@T THIS FUCKING WORK I HATE MY LIFE
+    if not toggles.InteractableESP.Value or not enabled then
+        print("INVISIBLE")
+        esp.SetVisible(false)
     end
 
     return esp
@@ -766,6 +764,7 @@ library:GiveSignal(rooms.ChildAdded:Connect(function(room)
             room.Name == "BigChasm" or
             room.Name == "PT1" or
             room.Name == "DeadSeater" or
+            room.Name == "Twister" or
             string.find(room.Name, "IntentionallyUnfinished")
         ) then
         getgenv().Alert("The next room is rare!")
@@ -912,7 +911,6 @@ library:GiveSignal(currentRoom.Changed:Connect(function(room)
     end
 
     table.insert(activeRoomStuff.Connections, room.DescendantAdded:Connect(function(obj)
-        print("ADDED")
         funcs.checkForESP(obj)
     end))
 end))
@@ -1039,9 +1037,17 @@ oldMethod = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
 
     local args = { ... }
 
-    if not checkcaller() and method == "FireServer" then
-        if self == zoneChangeEvent then
-            currentRoom.Value = args[1]
+    if not checkcaller() then
+        if method == "FireServer" then
+            if self == zoneChangeEvent then
+                currentRoom.Value = args[1]
+            end
+        elseif method == "InvokeServer" then
+            -- if toggles.AutoGenerator.Value and (string.find(self.Parent.Name, "Generator") or string.find(self.Parent.Name, "BrokenCables")) then
+            --     task.spawn(function()
+            --         self.Parent:FindFirstChild("RemoteEvent"):FireServer(true)
+            --     end)
+            -- end
         end
     end
 
