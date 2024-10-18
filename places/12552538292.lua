@@ -15,6 +15,7 @@ local players = game:GetService("Players")
 local repStorage = game:GetService("ReplicatedStorage")
 local runService = game:GetService("RunService")
 local proximityPromptService = game:GetService("ProximityPromptService")
+local userInputService = game:GetService("UserInputService")
 
 local rooms = workspace:WaitForChild("Rooms")
 local monsters = workspace:WaitForChild("Monsters")
@@ -39,6 +40,18 @@ currentRoom.Name = "CurrentRoom"
 currentRoom.Parent = player
 
 local pandemoniumESP = nil
+
+local fly = {
+    enabled = false,
+    flyBody = Instance.new("BodyVelocity"),
+    flyGyro = Instance.new("BodyGyro")
+}
+
+fly.flyBody.Velocity = Vector3.zero
+fly.flyBody.MaxForce = Vector3.one * 9e9
+
+fly.flyGyro.P = 9e4
+fly.flyGyro.MaxTorque = Vector3.one * 9e9
 
 local playerGui = player.PlayerGui
 local camera = workspace.CurrentCamera
@@ -101,6 +114,17 @@ local activeRoomStuff = {
 }
 
 local funcs = {}
+
+funcs.getMoveVector = function()
+    local x, z = 0, 0
+
+    if userInputService:IsKeyDown(Enum.KeyCode.W) then z = z - 1 end
+    if userInputService:IsKeyDown(Enum.KeyCode.A) then x = x - 1 end
+    if userInputService:IsKeyDown(Enum.KeyCode.S) then z = z + 1 end
+    if userInputService:IsKeyDown(Enum.KeyCode.D) then x = x + 1 end
+
+    return Vector3.new(x, 0, z)
+end
 
 funcs._ESP = function(properties)
     return ESPLib.ESP.Highlight({
@@ -283,7 +307,7 @@ main.Movement:AddSlider("SpeedBoost", {
     Text = "Speed Boost",
     Default = 0,
     Min = 0,
-    Max = 45,
+    Max = 50,
     Rounding = 0
 })
 
@@ -291,7 +315,7 @@ main.Movement:AddSlider("JumpHeight", {
     Text = "Jump Power",
     Default = 0,
     Min = 0,
-    Max = 30,
+    Max = 25,
     Rounding = 0
 })
 
@@ -301,9 +325,11 @@ main.Movement:AddToggle("AbsoluteMadness", {
         if value then
             options.SpeedBoost:SetMax(900)
             options.JumpHeight:SetMax(900)
+            options.FlySpeed:SetMax(900)
         else
-            options.SpeedBoost:SetMax(45)
-            options.JumpHeight:SetMax(30)
+            options.SpeedBoost:SetMax(50)
+            options.JumpHeight:SetMax(25)
+            options.FlySpeed:SetMax(50)
         end
     end
 })
@@ -327,13 +353,34 @@ main.Movement:AddToggle("Noclip", {
     Mode = "Toggle"
 })
 
+main.Movement:AddDivider()
+
 main.Movement:AddToggle("Fly", {
-    Text = "Fly",
-    Risky = true
+    Text = "Fly"
 }):AddKeyPicker("FlyKey", {
     Text = "Fly",
     Default = "G",
-    Mode = "Toggle"
+    Mode = "Toggle",
+    Callback = function(value)
+        if toggles.Fly.Value then
+            fly.enabled = value
+            if value then
+                fly.flyBody.Parent = player.Character.HumanoidRootPart
+                fly.flyGyro.Parent = player.Character.HumanoidRootPart
+            else
+                fly.flyBody.Parent = nil
+                fly.flyGyro.Parent = nil
+            end
+        end
+    end
+})
+
+main.Movement:AddSlider("FlySpeed", {
+    Text = "Fly Speed",
+    Default = 0,
+    Min = 0,
+    Max = 50,
+    Rounding = 0
 })
 
 main.Interaction:AddToggle("InstantInteract", { Text = "Instant Interact" })
@@ -946,6 +993,18 @@ library:GiveSignal(runService.RenderStepped:Connect(function()
                     part.CanCollide = false
                 end
             end
+        end
+
+        if fly.enabled then
+            local velocity = Vector3.zero
+            local moveVector = funcs.getMoveVector()
+            velocity = -((camera.CFrame.LookVector * moveVector.Z) - (camera.CFrame.RightVector * moveVector.X))
+
+            if userInputService:IsKeyDown(Enum.KeyCode.Space) then velocity = velocity + camera.CFrame.UpVector end
+            if userInputService:IsKeyDown(Enum.KeyCode.LeftShift) then velocity = velocity - camera.CFrame.UpVector end
+
+            fly.flyBody.Velocity = velocity * options.FlySpeed.Value
+            fly.flyGyro.CFrame = camera.CFrame
         end
 
         camera.FieldOfView = options.FieldOfView.Value
