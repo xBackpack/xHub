@@ -29,9 +29,9 @@ local saves = getgenv().SaveManager
 local options = getgenv().Linoria.Options
 local toggles = getgenv().Linoria.Toggles
 
-ESPLib:SetPrefix("xHub")
-ESPLib:SetIsLoggingEnabled(true)
-ESPLib:SetDebugEnabled(true)
+ESPLib.SetPrefix("xHub")
+ESPLib.SetIsLoggingEnabled(true)
+ESPLib.SetDebugEnabled(true)
 
 local player = players.LocalPlayer
 
@@ -145,8 +145,7 @@ funcs.setupMonsterESP = function(monster, colour, name, enabled)
     })
 
     if not toggles.EntityESP.Value or not enabled then
-        print("INVISIBLE")
-        esp.SetVisible(true)
+        esp.SetVisible(false)
     end
 
     return esp
@@ -181,8 +180,7 @@ funcs.setupInteractableESP = function(interactable, colour, name, enabled)
     })
 
     if not toggles.InteractableESP.Value or not enabled then
-        print("INVISIBLE")
-        esp.SetVisible(true)
+        esp.SetVisible(false)
     end
 
     return esp
