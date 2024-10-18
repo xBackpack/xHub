@@ -30,6 +30,7 @@ local options = getgenv().Linoria.Options
 local toggles = getgenv().Linoria.Toggles
 
 ESPLib.SetPrefix("ESP")
+ESPLib.SetIsLoggingEnabled(false)
 
 local player = players.LocalPlayer
 
@@ -122,6 +123,8 @@ funcs._ESP = function(properties)
 end
 
 funcs.setupMonsterESP = function(monster, colour, name, enabled)
+    if not toggles.EntityESP.Value or not enabled then return end
+
     local tracerEnabled
     local arrowEnabled
 
@@ -142,14 +145,12 @@ funcs.setupMonsterESP = function(monster, colour, name, enabled)
         ArrowEnabled = arrowEnabled
     })
 
-    if not toggles.EntityESP.Value or not enabled then
-        esp.SetVisible(false)
-    end
-
     return esp
 end
 
 funcs.setupInteractableESP = function(interactable, colour, name, enabled)
+    if not toggles.InteractableESP.Value or not enabled then return end
+
     local proxyPart = interactable:FindFirstChild("ProxyPart")
 
     if proxyPart then
@@ -176,10 +177,6 @@ funcs.setupInteractableESP = function(interactable, colour, name, enabled)
         TracerEnabled = toggles.InteractableESPTracers.Value,
         ArrowEnabled = toggles.InteractableESPArrows.Value
     })
-
-    if not toggles.InteractableESP.Value or not enabled then
-        esp.SetVisible(false)
-    end
 
     return esp
 end
@@ -685,6 +682,7 @@ library:GiveSignal(workspace.ChildAdded:Connect(function(child)
 
             if pandemoniumESP then
                 pandemoniumESP.Destroy()
+                pandemoniumESP = nil
             end
 
             pandemoniumESP = funcs.setupMonsterESP(
@@ -693,11 +691,6 @@ library:GiveSignal(workspace.ChildAdded:Connect(function(child)
                 "Pandemonium",
                 options.EntityESPList.Value["Pandemonium"]
             )
-
-            child.Destroying:Once(function()
-                pandemoniumESP.Destroy()
-                pandemoniumESP = nil
-            end)
         elseif child.Name == "A60" then
             if toggles.A60Notifier.Value then getgenv().Alert("A60 SPAWNED! THAT'S RARE LOL!!!!!!!!!") end
 
