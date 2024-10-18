@@ -29,9 +29,7 @@ local saves = getgenv().SaveManager
 local options = getgenv().Linoria.Options
 local toggles = getgenv().Linoria.Toggles
 
-ESPLib.SetPrefix("xHub")
-ESPLib.SetIsLoggingEnabled(true)
-ESPLib.SetDebugEnabled(true)
+ESPLib.SetPrefix("ESP")
 
 local player = players.LocalPlayer
 
