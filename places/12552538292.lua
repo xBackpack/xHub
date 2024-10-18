@@ -146,7 +146,7 @@ funcs.setupMonsterESP = function(monster, colour, name, enabled)
 
     if not toggles.EntityESP.Value or not enabled then
         print("INVISIBLE")
-        esp.SetVisible(false)
+        esp.SetVisible(true)
     end
 
     return esp
@@ -182,7 +182,7 @@ funcs.setupInteractableESP = function(interactable, colour, name, enabled)
 
     if not toggles.InteractableESP.Value or not enabled then
         print("INVISIBLE")
-        esp.SetVisible(false)
+        esp.SetVisible(true)
     end
 
     return esp
