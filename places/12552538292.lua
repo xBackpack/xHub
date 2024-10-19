@@ -1093,11 +1093,11 @@ oldMethod = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
                 currentRoom.Value = args[1]
             end
         elseif method == "InvokeServer" then
-            -- if toggles.AutoGenerator.Value and (string.find(self.Parent.Name, "Generator") or string.find(self.Parent.Name, "BrokenCables")) then
-            --     task.spawn(function()
-            --         self.Parent:FindFirstChild("RemoteEvent"):FireServer(true)
-            --     end)
-            -- end
+            if toggles.AutoGenerator.Value and (string.find(self.Parent.Name, "Generator") or string.find(self.Parent.Name, "BrokenCables")) then
+                task.spawn(function()
+                    self.Parent:FindFirstChild("RemoteEvent"):FireServer(true)
+                end)
+            end
         end
     end
 
