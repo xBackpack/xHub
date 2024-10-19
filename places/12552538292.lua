@@ -50,7 +50,7 @@ local fly = {
 fly.flyBody.Velocity = Vector3.zero
 fly.flyBody.MaxForce = Vector3.one * 9e9
 
-fly.flyGyro.P = 9e4
+fly.flyGyro.P = 0
 fly.flyGyro.MaxTorque = Vector3.one * 9e9
 
 local playerGui = player.PlayerGui
