@@ -1014,7 +1014,7 @@ library:GiveSignal(runService.RenderStepped:Connect(function()
 
     player.Character.Humanoid.JumpHeight = options.JumpHeight.Value
 
-    if player.Character.PrimaryPart.Massless then
+    if player.Character.PrimaryPart.Massless or fly.enabled then
         player.Character.PrimaryPart.CustomPhysicalProperties = nil
     elseif toggles.NoAccel.Value then
         player.Character.PrimaryPart.CustomPhysicalProperties = PhysicalProperties.new(100, 0.5, 0.3, 1, 1)
