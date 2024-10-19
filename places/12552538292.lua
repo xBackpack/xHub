@@ -795,6 +795,8 @@ library:GiveSignal(rooms.ChildAdded:Connect(function(room)
             room.Name == "Huh?DeadEnd?" or
             room.Name == "SisterLocation" or
             room.Name == "LotsOfLockers" or
+            room.Name == "ZealLavaCave" or
+            room.Name == "NoclippingIntoItself" or
             room.Name == "Shrinking" or
             room.Name == "TheoristOffice" or
             room.Name == "BigChasm" or
