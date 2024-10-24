@@ -1,4 +1,4 @@
-local validPlaceIds = { 12552538292, }
+local validPlaceIds = { 12552538292, 17355897213 }
 local foundGame = false
 
 local linoriaLib = "https://raw.githubusercontent.com/deividcomsono/LinoriaLib/refs/heads/main/"

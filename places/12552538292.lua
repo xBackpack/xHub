@@ -803,6 +803,7 @@ library:GiveSignal(rooms.ChildAdded:Connect(function(room)
             room.Name == "PT1" or
             room.Name == "DeadSeater" or
             room.Name == "Twister" or
+            room.Name == "LetsGamble" or
             string.find(room.Name, "IntentionallyUnfinished")
         ) then
         getgenv().Alert("The next room is rare!")
