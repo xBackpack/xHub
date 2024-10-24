@@ -76,8 +76,6 @@ local tabs = {
     Main = window:AddTab("Main"),
     Visual = window:AddTab("Visual"),
     Entity = window:AddTab("Entity"),
-    Notifiers = window:AddTab("Notifiers"),
-    ESP = window:AddTab("ESP"),
     Settings = window:AddTab("Settings")
 }
 
@@ -168,19 +166,6 @@ main.Movement:AddSlider("FlySpeed", {
     Rounding = 0
 })
 
-main.Interaction:AddToggle("InstantInteract", { Text = "Instant Interact" })
-
-main.Interaction:AddToggle("AutoInteract", {
-    Text = "Auto Interact",
-    Risky = true
-}):AddKeyPicker("AutoInteractKey", {
-    Text = "Auto Interact",
-    Default = "R",
-    Mode = "Hold"
-})
-
-main.Interaction:AddToggle("AutoGenerator", { Text = "Auto Searchlights Generator", Risky = true })
-
 main.Sound:AddToggle("NoAmbience", {
     Text = "Mute Ambience",
     Callback = function(value)
@@ -193,26 +178,6 @@ main.Sound:AddToggle("NoAmbience", {
 })
 
 main.Sound:AddToggle("NoFootsteps", { Text = "Mute Footsteps" })
-
-main.Sound:AddToggle("NoAnticipationMusic", {
-    Text = "Mute Room 1 Music",
-    Callback = function(value)
-        if value then
-            local music = workspace:WaitForChild("AnticipationIntro")
-            local loop = music:WaitForChild("AnticipationLoop")
-            local fadeout = loop:WaitForChild("AnticipationFadeout")
-
-            music.Volume = 0
-            loop.Volume = 0
-            fadeout.Volume = 0
-        end
-    end
-})
-
-main.Other:AddToggle("LessLag", {
-    Text = "Performance Increase",
-    Tooltip = "Just a few optimisations"
-})
 
 main.Other:AddButton({
     Text = "Play Again",
@@ -301,13 +266,6 @@ local entity = {
 entity.Exploits:AddToggle("AntiBouncer", { Text = "Anti Bouncer", Risky = true })
 entity.Exploits:AddToggle("AntiSkelepede", { Text = "Anti Skelepede", Risky = true })
 entity.Exploits:AddToggle("AntiCandlelighters", { Text = "Anti Candlelighters", Risky = true })
-
---// FUNCTIONS \\--
-library:GiveSignal(proximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
-    if not toggles.InstantInteract.Value then return end
-
-    fireproximityprompt(prompt)
-end))
 
 library:GiveSignal(runService.RenderStepped:Connect(function()
     if toggles.NoAmbience.Value then
