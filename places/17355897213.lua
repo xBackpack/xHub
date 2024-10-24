@@ -14,11 +14,8 @@ local lighting = game:GetService("Lighting")
 local players = game:GetService("Players")
 local repStorage = game:GetService("ReplicatedStorage")
 local runService = game:GetService("RunService")
-local proximityPromptService = game:GetService("ProximityPromptService")
 local userInputService = game:GetService("UserInputService")
 
-local rooms = workspace:WaitForChild("Rooms")
-local monsters = workspace:WaitForChild("Monsters")
 local characters = workspace:WaitForChild("Characters")
 local events = repStorage:WaitForChild("Events")
 local blur = lighting:WaitForChild("Blur")
@@ -47,7 +44,6 @@ fly.flyBody.MaxForce = Vector3.one * 9e9
 fly.flyGyro.P = 0
 fly.flyGyro.MaxTorque = Vector3.one * 9e9
 
-local playerGui = player.PlayerGui
 local camera = workspace.CurrentCamera
 
 if not player.Character then player.CharacterAdded:Wait() end
