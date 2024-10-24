@@ -81,8 +81,7 @@ local tabs = {
 
 local main = {
     Movement = tabs.Main:AddLeftGroupbox("Movement"),
-    Sound = tabs.Main:AddLeftGroupbox("Sound"),
-    Interaction = tabs.Main:AddRightGroupbox("Interaction"),
+    Sound = tabs.Main:AddRightGroupbox("Sound"),
     Other = tabs.Main:AddRightGroupbox("Other")
 }
 
