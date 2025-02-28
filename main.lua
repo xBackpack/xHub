@@ -6,7 +6,7 @@ local placeId = game.PlaceId
 
 for _, id in validPlaceIds do
     if placeId == id then
-        loadstring(game:HttpGet(directory .. placeId .. ".lua"))
+        loadstring(game:HttpGet(directory .. placeId .. ".lua"))()
         break
     end
 end
