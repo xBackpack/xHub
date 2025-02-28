@@ -4,7 +4,7 @@ local directory = "https://raw.githubusercontent.com/xBackpack/xHub/refs/heads/m
 
 local placeId = game.PlaceId
 
-for _, id in ipairs(validPlaceIds) do
+for _, id in validPlaceIds do
     if placeId == id then
         loadstring(game:HttpGet(directory .. placeId .. ".lua"))
         break
