@@ -6,16 +6,22 @@ local linoriaLib = "https://raw.githubusercontent.com/mstudio45/LinoriaLib/main/
 local esp = "https://raw.githubusercontent.com/mstudio45/MSESP/refs/heads/main/"
 local addons = linoriaLib .. "addons/"
 
-loadstring(game:HttpGet(esp .. "source.luau"))()
 loadstring(game:HttpGet(linoriaLib .. "Library.lua"))()
-getgenv().ThemeManager = loadstring(game:HttpGet(addons .. "ThemeManager.lua"))()
-getgenv().SaveManager = loadstring(game:HttpGet(addons .. "SaveManager.lua"))()
 
 local library = getgenv().Library
 
 getgenv().Alert = function(message, time)
 	library:Notify("[xHub] " .. message, time or 5, "rbxassetid://4590662766")
 end
+
+loadstring(game:HttpGet(esp .. "source.luau"))()
+
+getgenv().Alert("Loaded ESP!")
+
+getgenv().ThemeManager = loadstring(game:HttpGet(addons .. "ThemeManager.lua"))()
+getgenv().SaveManager = loadstring(game:HttpGet(addons .. "SaveManager.lua"))()
+
+getgenv().Alert("Loaded addons!")
 
 local placesRepo = "https://raw.githubusercontent.com/xBackpack/xHub/refs/heads/main/places/"
 
